@@ -26,8 +26,11 @@
                     <img src="/storage/imgs/{{$post->image}}" alt="img" width="100px" height="100px" class="m-2">
                 @endif
 
-                <button class="btn btn-success LIKE" id="{{$post->id}}" {{ ($liked) ? 'disabled' : '' }} > <small>{{ $post->likes->count() }}</small> <span> {{ ($liked) ? 'You Liked This' : 'Like' }}</span></button>
-                <button class="btn btn-success SUBSCRIBE" id="{{$post->id}}" {{ ($subscribed) ? 'disabled' : '' }}> <span> {{ ($subscribed) ? 'Subscribed' : 'Subscribe to this post' }}</span></button>
+                <!-- like -->
+                <button class="btn btn-success {{ ($liked) ? 'unlike' : 'like' }}" id="POST-LIKE" data-post-id="{{$post->id}}" > <small>{{ $post->likes->count() }}</small> <span> {{ ($liked) ? 'unlike' : 'like' }}</span></button>
+                
+                <!-- Subscribe -->
+                <button class="btn btn-success {{ ($subscribed) ? 'unsubscribe' : 'subscribe' }}" id="POST-SUBSCRIBE" data-post-id="{{$post->id}}">{{ ($subscribed) ? 'unsubscribe' : 'subscribe' }}</button>
 
                 <hr>
 
@@ -49,10 +52,10 @@
 
         <h1>Comments</h1>
 
-        <div id="AddCommentForm">
+        <form id="AddCommentForm">
             <input type="text" class="form-control d-inline w-75 mr-2" name="body" placeholder="Comment">
-            <input type="submit" data-post-id="{{$post->id}}" class="btn btn-primary mb-2" value="Add">
-        </div>
+            <button type="submit" data-post-id="{{$post->id}}" class="btn btn-primary mb-2">Add</button>
+        </form>
 
         <div class="d-block">
             @include('errors')
@@ -66,9 +69,12 @@
                     <small> at: {{ $comment->created_at->format('Y-m-d') }} </small>
                 </li>
             @endforeach
-
         </ul>
-
+            
+            @if($comments->lastPage() > 1)
+            <a href="" id="COMMENTS-LOAD-MORE" data-comments-lastpage="{{ $comments->lastPage() }}" data-post-id="{{ $post->id }}" class="card-link">Load more</a>
+            @endif
+            
     </div>
 
 

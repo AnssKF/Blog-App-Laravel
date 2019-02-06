@@ -4,12 +4,6 @@
 
     <div class="container">
 
-        @auth
-        <!-- subscribe -->
-        <button class="btn btn-success btn-block {{ ($subscribed) ? 'unsubscribe' : 'subscribe' }}" id="CATEGORY-SUBSCRIBE" data-category-id="{{$category->id}}">{{ ($subscribed) ? 'unsubscribe from category' : 'subscribe to this category' }}</button>
-
-        @endauth
-
         @foreach($posts as $post)
 
         <div class="card mt-2">
@@ -28,15 +22,13 @@
 
                 </p>
 
-                @if($post->image != null)
-                    <img src="/storage/imgs/{{$post->image}}" alt="img" width="100px" height="100px" class="m-2">
-                @endif 
-
             </div>
         
         </div>
         
         @endforeach
+
+        {{ $posts->links() }}
 
     </div>
 

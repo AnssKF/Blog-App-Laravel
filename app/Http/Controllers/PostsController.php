@@ -35,19 +35,9 @@ class PostsController extends Controller
 
 
     public function showCategory(Category $category){
-        $posts = $category->posts;
+        $posts = $category->posts()->latest()->get();
         $subscribed = ($category->subscribers->where('id','=',auth()->id()))->count();        
         return view('post.category',compact('posts','category','subscribed'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -59,8 +49,9 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(),[
-            'title' => 'required|min:3',
-            'body' => 'required|min:3'
+            'title' => 'required|min:3|max:255',
+            'body' => 'required|min:3',
+            'image' => 'mimes:jpeg,jpg,png,gif|max:4000'
         ]);
 
         if($request->hasFile('image')){
@@ -88,7 +79,8 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
-        $comments = $post->comments()->latest()->get();
+        // $comments = $post->comments()->latest()->get();
+        $comments = $post->comments()->latest()->paginate(5);
         $liked = ($post->likes->where('user_id','=',auth()->id()))->count();
         $subscribed = ($post->subscribers->where('id','=',auth()->id()))->count();
         return view('post.show',compact(['post','comments','liked','subscribed']));
@@ -115,8 +107,8 @@ class PostsController extends Controller
     public function update(Post $post)
     {
         $this->validate(request(),[
-            'title' => 'required',
-            'body' => 'required'
+            'title' => 'required|min:3|max:255',
+            'body' => 'required|min:3',
         ]);
 
         $post->update([

@@ -5,6 +5,7 @@
     <div class="container">
 
         @auth
+        @include('errors')
         <form action="/posts" method="POST" enctype="multipart/form-data">
             @csrf
             <h6>New Post</h6>
@@ -33,7 +34,6 @@
                 <input type="submit" value="Post" class="btn btn-block btn-info text-light">
             </div>
 
-            @include('errors')
 
         </form>
 

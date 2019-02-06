@@ -7,6 +7,8 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile','ProfileController@index')->name('profile');
+Route::post('/profile','ProfileController@store');
 
 
 Route::patch('/posts/{post}/update', 'PostsController@update');
@@ -22,10 +24,17 @@ Route::get('/category/{category}', 'PostsController@showCategory')->name('catego
 
 
 Route::post('/comments/{post}','CommentsController@store');
+Route::get('/comments/{post}','CommentsController@getMoreComments');
 
 Route::post('/like/{post}','LikeController@store');
+Route::delete('/like/{post}','LikeController@destroy');
 
 Route::post('/subscribe/{post}/post','SubscriptionController@postSubscribe');
+Route::delete('/subscribe/{post}/post','SubscriptionController@postUnSubscribe');
+
 Route::post('/subscribe/{category}/category','SubscriptionController@categorySubscribe');
+Route::delete('/subscribe/{category}/category','SubscriptionController@categoryUnSubscribe');
+
+Route::get('/test','PostsController@test');
 
 
